@@ -1,0 +1,83 @@
+#app {
+    #projectContainer {
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        flex-direction: row;
+        align-content: flex-start;
+        width: 1000px;
+        background-color: transparent;
+        height: auto;
+        min-height: 120%;
+        .projectBlockMain {
+            width: 100%;
+            height: 200px;
+            background-color: #212121;
+            border-radius: 10px;
+            overflow: hidden;
+            .projectBg {
+                float: left;
+                width: 250px;
+                height: 100%;
+                background-color: gray;
+                background-position: center;
+                background-size: cover;
+            }
+            .conText {
+                float: left;
+                margin-left: 10px;
+                padding: 5px;
+                p {
+                    cursor: pointer;
+                    margin-top: 10px;
+                    float: left;
+                    background-color: #4a4a4a;
+                    padding: 10px 20px 10px 20px;
+                    border-radius: 10px;
+                    transition: .5s;
+                    &:hover {
+                        background-color: rgb(161, 89, 255);
+                    }
+                }
+            }
+        }
+        .projectBlock {
+            background-image: url('/src/img/portfolio/customsearch-thumb.jpg');
+            background-size: cover;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-top: 10px;
+            width: 320px;
+            height: 250px;
+            background-color: green;
+            p {
+                padding: 10px;
+                position: relative;
+                top: 150px;
+                bottom: 0;
+                width: 100%;
+                height: 100px;
+                background-color: rgb(33 33 33 / 90%);
+                backdrop-filter: blur(5px);
+                overflow: hidden;
+                &::after {
+                    content: 'view >';
+                    position: relative;
+                    float: right;
+                    top: 25px;
+                    right: 263px;
+                    opacity: 0;
+                    transition: .5s;
+                }
+                &:hover {
+                    &::after {
+                        color: rgb(161, 89, 255);
+                        right: 243px;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
