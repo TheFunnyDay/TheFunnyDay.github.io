@@ -59,7 +59,7 @@ takeClicker.addEventListener("click", () => {
         }
         if (localStorage.getItem("countOfFartsTwo") == 777) {
             clickerEvent.innerHTML = yt('B_xbmDG1kAY')
-            alertEvent("void", 'https://media.tenor.com/Tyc6kaeW3VYAAAAd/casino-chips.gif')
+            alertEvent("Yobanu Casino", 'https://media.tenor.com/Tyc6kaeW3VYAAAAd/casino-chips.gif')
         }
         if (localStorage.getItem("countOfFartsTwo") == 1000) {
             clickerEvent.innerHTML = yt('ZS-djTH4eYU')
