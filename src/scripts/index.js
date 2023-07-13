@@ -7,7 +7,12 @@ let countOfFarts = localStorage.getItem("countOfFartsTwo")
 let clickerEvent = document.getElementById("clickerEventContent");
 const gamePlayBanner = document.getElementById('gamePlayBanner');
 const clickerEventContent = document.getElementById('clickerEventContent');
-if (!countOfFarts) { localStorage.clear(); localStorage.setItem("countOfFartsTwo", 0);};
+if (!countOfFarts) { 
+    localStorage.clear(); localStorage.setItem("countOfFartsTwo", 0);
+}
+window.onload = () => {
+    document.querySelector("#countOfFarts").textContent = localStorage.getItem("countOfFartsTwo");
+}
 
 if (!localStorage.getItem("bgImg")) { 
     localStorage.setItem("bgImg", '') 
