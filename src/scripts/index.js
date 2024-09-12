@@ -45,7 +45,7 @@ const pages = {
         </main>`,
     portfolio: `
         <header class='consoleHeader'>
-            <img src='src/img/PixelLogo.png'/>
+            <img src='src/img/pixelLogo.png'/>
             <div class='consoleHeaderText'>
                 ${defaultHeaderText}
             </div>
