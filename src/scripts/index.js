@@ -29,7 +29,7 @@ const defaultHeaderText = `
 const pages = {
     main: `
         <header class='consoleHeader'>
-            <img src='src/img/PixelLogo.png'/>
+            <img src='src/img/pixelLogo.png'/>
             <div class='consoleHeaderText'>
                 ${defaultHeaderText}
             </div>
@@ -131,7 +131,7 @@ const pages = {
         </main>`,
     ngoldprojects: `
         <header class='consoleHeader'>
-            <img src='src/img/PixelLogo.png'/>
+            <img src='src/img/pixelLogo.png'/>
             <div class='consoleHeaderText'>
                 <p>NGoldProjects are my old (school) projects that have been redesigned for the purpose of preserving them in personal history.</p>
                 <p>You can view them here: <a href="https://ngoldprojects.github.io/" target="_blank">https://ngoldprojects.github.io/</a></p>
