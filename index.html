@@ -1,48 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./src/styles/css/global.css">
-    <link rel="stylesheet" href="./src/styles/css/mainPage.css">
+    <link rel="stylesheet" href="src/styles/css/global.css">
+    <link rel="preload" href="src/styles/css/global.css" as="style">
+    <link rel="preload" href="src/img/PixelLogo.png" as="image">
+    <link rel="preload" href="src/img/doubleyou.png" as="image">
+    <link rel="preload" href="src/img/customsearch.png" as="image">
+    <link rel="preload" href="src/img/socianonet.png" as="image">
+    <link rel="preload" href="src/img/genshinlauncher.png" as="image">
+    <link rel="preload" href="src/img/refreshbooru.png" as="image">
+    <link rel="preload" href="src/scripts/index.js" as="script" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" as="font" type="font/woff2" crossorigin> 
+    <title>TheFunnyDay</title>
+    <style>
+        .terminal {
+            width: 800px;
+            height: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid white;
+            overflow-y: auto;
+            background: rgb(0 0 0 / 70%);
+        }
+
+        .input-line {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        #prompt {
+            flex-shrink: 0;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        #commandInput {
+            background-color: transparent;
+            color: white;
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 20px;
+        }
+    </style>
 </head>
+
 <body>
     <div id="app">
-        <div id="alertEvent">
-            <div class="blured">
-                <div class="alertEventIco"></div>
-                <div class="alertText">
-                    <p>Unlocked:</p>
-                    <div class="alertEventName">Green, Green. What is your problem?</div>
-                </div>
-            </div>
-        </div>
-        <div id="description">   
-            <p>Umm... hi?</p>
-            <p>My name is <b>Nikita</b> aka <b>TheFunnyDay</b></p>
-            <p>This is a test page for this site, u know</p>
-            <p>u can check my <a href="./pages/portfolio.html">projects portfolio</a>, !!!NOW WITH IMAGES!!! d=====(￣▽￣*)b</p>
-            <p>sooo... check this </p>
-        </div>
-        <div id="gameCon">
-            <div id="gamePlayBanner">
-                <div id="blurryGamePlayBanner">
-                    <div id="clickerEventContent"></div>
-                    <div id="clickerInfo">
-                        <p>Count of farts: <span id="countOfFarts" class="red"></span></p>
-                        <div class="button" id="clicker">Click</div>
+        <div class="terminal" id="terminal">
+            <div class="output" id="output">
+                <header class='consoleHeader'>
+                    <img src='src/img/PixelLogo.png'/>
+                    <div class='consoleHeaderText'>
+                    <p>Umm... hi?</p>
+                    <p>My name is Nikita aka TheFunnyDay</p>
+                    <p>I'm a web-developer, trying to become a full-stack developer.</p>
+                    <p>sooo... check this *click here*</p>
+                    
+                    <p class="linksToSocial"><a href="https://t.me/TheFunnyDay" style="color: #6497D3">TELEGRAM</a> <a href="https://github.com/TheFunnyDay" style="color: white"><span style="color: white">GIT</span><span style="color: #909090">HUB</span></a></p>
                     </div>
-
-                </div>
+                </header>
+                <main class='consoleBody'>
+                    <div class="consoleText">
+                        <ul>
+                            <li><a href="?p=portfolio" class="page-link">Project’s portfolio</a></li>
+                            <li><a href="?p=game" class="page-link">Mini-game</a></li>
+                            <li><a href="?p=commandline" class="page-link">Open command line</a></li>
+                        </ul>    
+                    </div>    
+                </main>
             </div>
-        </div>
-        <div class="description">
-            <p>and also this site have open source code and u can <a href="https://github.com/thefunnyday/thefunnyday.github.io/">check</a> this</p>
-            <p class="small">i need to buy hosting</p>
+            <div class="input-line">
+                <span id="prompt">unknownuser@web:~$</span>
+                <input type="text" id="commandInput" autofocus>
+            </div>
         </div>
     </div>
-    <script src="./src/scripts/index.js" type="module"></script>
+
+    <script src="src/scripts/index.js">
+    </script>
 </body>
+
 </html>
