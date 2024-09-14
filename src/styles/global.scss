@@ -25,15 +25,15 @@ body {
         .terminal {
             .output {
                 font-size: 20px;
+                a {
+                    color: #7A8FFF;
+                }
                 ul {
                     list-style: square;
                     padding-left: 20px;
                     margin-bottom: 20px;
                     li {
                         margin-bottom: 10px;
-                        a {
-                            color: #7A8FFF;
-                        }
                     }
                 }
                 .consoleHeader {

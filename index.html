@@ -4,15 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="src/styles/css/global.css">
+     <link rel="stylesheet" href="src/styles/css/global.css">
     <link rel="preload" href="src/styles/css/global.css" as="style">
     <link rel="preload" href="src/img/pixelLogo.png" as="image">
     <link rel="preload" href="src/img/doubleyou.png" as="image">
     <link rel="preload" href="src/img/customsearch.png" as="image">
     <link rel="preload" href="src/img/socianonet.png" as="image">
     <link rel="preload" href="src/img/genshinlauncher.png" as="image">
-    <link rel="preload" href="src/img/refreshbooru.png" as="image">
+    <link rel="preload" href="src/img/refreshbooru.png" as="image"> 
     <link rel="preload" href="src/scripts/index.js" as="script" />
+    <link rel="preload" href="src/scripts/localStorageTasks.js" as="script" />
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" as="font" type="font/woff2" crossorigin> 
     <title>TheFunnyDay</title>
@@ -37,7 +38,9 @@
             margin-right: 10px;
             font-size: 20px;
         }
-
+        #username {
+            color: #00ff39;
+        }
         #commandInput {
             background-color: transparent;
             color: white;
@@ -59,7 +62,7 @@
                     <p>Umm... hi?</p>
                     <p>My name is Nikita aka TheFunnyDay</p>
                     <p>I'm a web-developer, trying to become a full-stack developer.</p>
-                    <p>sooo... check this *click here*</p>
+                    <p>sooo... check this <a href="https://www.youtube.com/watch?v=W79Ct5YqJyM" target="_blank">*click here*</a></p>
                     
                     <p class="linksToSocial"><a href="https://t.me/TheFunnyDay" style="color: #6497D3">TELEGRAM</a> <a href="https://github.com/TheFunnyDay" style="color: white"><span style="color: white">GIT</span><span style="color: #909090">HUB</span></a></p>
                     </div>
@@ -70,19 +73,20 @@
                             <li><a href="?p=portfolio" class="page-link">Project’s portfolio</a></li>
                             <li><a href="?p=game" class="page-link">Mini-game</a></li>
                             <li><a href="?p=commandline" class="page-link">Open command line</a></li>
-                        </ul>    
+                        </ul> 
+                        <p>For help type "help" below</p>   
                     </div>    
                 </main>
             </div>
             <div class="input-line">
-                <span id="prompt">unknownuser@web:~$</span>
+                <span id="prompt"><span id="username">unknownuser</span>@web:~$</span>
                 <input type="text" id="commandInput" autofocus>
             </div>
         </div>
     </div>
 
-    <script src="src/scripts/index.js">
-    </script>
+    <script src="src/scripts/index.js"></script>
+    <script src="src/scripts/localStorageTasks.js"></script>
 </body>
 
 </html>

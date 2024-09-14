@@ -21,7 +21,7 @@ const defaultHeaderText = `
         <p>Umm... hi?</p>
         <p>My name is Nikita aka TheFunnyDay</p>
         <p>I'm a web-developer, trying to become a full-stack developer.</p>
-        <p>sooo... check this *click here*</p>
+        <p>sooo... check this <a href="https://www.youtube.com/watch?v=W79Ct5YqJyM" target="_blank">*click here*</a></p>
         
         <p class="linksToSocial"><a href="https://t.me/TheFunnyDay" style="color: #6497D3">TELEGRAM</a> <a href="https://github.com/TheFunnyDay" style="color: white"><span style="color: white">GIT</span><span style="color: #909090">HUB</span></a></p>
     `;
@@ -41,6 +41,7 @@ const pages = {
                     <li><a href="?p=game" class="page-link">Mini-game</a></li>
                     <li><a href="?p=commandline" class="page-link">Open command line</a></li>
                 </ul>    
+                <p>For help type "help" below</p>
             </div>    
         </main>`,
     portfolio: `
@@ -174,7 +175,6 @@ function setupLinks() {
 
 // check page param and navigate to it
 window.onload = function () {
-    loadBackgroundImage(); // Load background image from localStorage
     const urlParams = new URLSearchParams(window.location.search);
     const page = urlParams.get('p') || 'main';
     navigateTo(page);
@@ -186,13 +186,7 @@ function setBackgroundImage(url) {
     localStorage.setItem('backgroundImageUrl', url);
 }
 
-// load background image
-function loadBackgroundImage() {
-    const savedUrl = localStorage.getItem('backgroundImageUrl');
-    if (savedUrl) {
-        document.getElementById('app').style.backgroundImage = `url(${savedUrl})`;
-    }
-}
+
 
 
 // Setup command input
@@ -209,15 +203,19 @@ input.addEventListener('keydown', function (event) {
 function handleCommand(command) {
     const parts = command.split(' ');
     const cmd = parts[0];
-    const args = parts.slice(1).join(' ');
-
+    const args = parts.slice(1);
+    
     switch (cmd) {
         case 'start':
             navigateTo('main');
             break;
+        case 'back':
+            navigateTo('main');
+            break;
         case 'portfolio':
-            if (args) {
-                switch (args) {
+            if (args.length > 0) {
+                const portfolioName = args.join(' ');
+                switch (portfolioName) {
                     case 'doubleyou':
                         navigateTo('doubleyou');
                         break;
@@ -237,7 +235,7 @@ function handleCommand(command) {
                         navigateTo('ngoldprojects');
                         break;
                     default:
-                        output.textContent = `Unknown portfolio: ${args}`;
+                        output.innerHTML = `<p style="color: red;">Unknown portfolio: ${portfolioName}</p> <br> Available portfolios: <ul><li>doubleyou</li><li>refreshbooru</li><li>customsearch</li><li>socianonet</li><li>genshinlauncher</li><li>ngoldprojects</li></ul>`;
                         break;
                 }
             } else {
@@ -248,21 +246,44 @@ function handleCommand(command) {
             navigateTo('game');
             break;
         case 'setup':
-            if (args) {
-                if (args === 'remove') {
+            if (args.length > 0) {
+                if (args[0] === 'remove') {
                     localStorage.removeItem('backgroundImageUrl');
                     document.getElementById('app').style.backgroundImage = '';
                     output.textContent = 'Background image removed from localStorage.';
                 } else {
-                    setBackgroundImage(args);
-                    output.textContent = `Background image set to: ${args}`;
+                    setBackgroundImage(args.join(' '));
+                    output.textContent = `Background image set to: ${args.join(' ')}`;
                 }
             } else {
-                output.textContent = 'Please provide a URL for the background image or "remove" to delete.';
+                output.innerHTML = `<p>Please provide a URL for the background image or type "setup remove" to delete.</p><br><p>Current background image: <a href="${localStorage.getItem('backgroundImageUrl')}" target="_blank">${localStorage.getItem('backgroundImageUrl')}</a></p>`;
+            }
+            break;
+        case 'settings':
+            if (args.length > 0 && args[0] === 'blur') {
+                if (args.length === 2) {
+                    const blurValue = args[1];
+                    const localSet = JSON.parse(localStorage.getItem('tfdSettings'))
+                    if (blurValue <= 0) {
+                        output.textContent = 'Blur removed.';
+                        document.getElementById('terminal').style.backdropFilter = '';
+                        localSet.consoleBlur = 0;
+                        localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                    } else {
+                        localSet.consoleBlur = blurValue;
+                        localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                        document.getElementById('terminal').style.backdropFilter = `blur(${blurValue}px)`;
+                        output.textContent = `Blur set to: ${blurValue}`;
+                    }
+                } else {
+                    output.textContent = 'Please provide a value for blur (e.g., "settings blur 1").';
+                }
+            } else {
+                output.innerHTML = '<p style="color: red;">Unknown settings command.</p><p>Its syntax is: settings &lt;command&gt; &lt;value&gt;</p> <br>Available settings: <br><ul><li>blur &lt;value&gt;</li></ul>';
             }
             break;
         case 'help':
-            output.innerHTML = 'Available commands: <br>start<br> portfolio | portfolio (name)<br> game<br> setup (url) | setup remove<br> help<br>';
+            output.innerHTML = 'Available commands: <br>start | back - back to main<br> portfolio - go to portfolio page<br> portfolio &lt;portfolio name&gt; - go to portfolio page with selected portfolio<br> game - go to game<br> setup &lt;url to image&gt; - set background image<br> setup remove - remove background image<br> settings blur &lt;value&gt; - set blur value<br>help - you actually already know<br>';
             break;
         default:
             output.textContent = `Unknown command: ${command}`;
@@ -270,6 +291,7 @@ function handleCommand(command) {
     }
     terminal.scrollTop = terminal.scrollHeight;
 }
+
 
 
 
