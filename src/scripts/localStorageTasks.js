@@ -1,4 +1,7 @@
 window.onload = () => {
+    if (localStorage.getItem('tfdSettings')) {
+        localStorage.removeItem('tfdSettings');
+    }
     const terminal = document.getElementById('terminal');
     const defaultSettings = {
         consoleBlur: "0",
@@ -7,9 +10,9 @@ window.onload = () => {
         fontColor: "#ffffff"
     };
 
-    let settings = JSON.parse(localStorage.getItem('tfdSettings')) || defaultSettings;
+    let settings = JSON.parse(localStorage.getItem('conSettings')) || defaultSettings;
     settings = { ...defaultSettings, ...settings };
-    localStorage.setItem('tfdSettings', JSON.stringify(settings));
+    localStorage.setItem('conSettings', JSON.stringify(settings));
 
     const { consoleBlur, consoleBgColor, fontColor } = settings;
 

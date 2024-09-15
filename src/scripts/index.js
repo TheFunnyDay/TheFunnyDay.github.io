@@ -259,7 +259,7 @@ function handleCommand(command) {
             break;
         case 'settings':
             if (args.length > 0) {
-                const localSet = JSON.parse(localStorage.getItem('tfdSettings'));
+                const localSet = JSON.parse(localStorage.getItem('conSettings'));
                 const settingName = args[0];
                 const settingValue = args.slice(1).join(' ');
 
@@ -277,7 +277,7 @@ function handleCommand(command) {
                         document.getElementById('terminal').style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
                         document.getElementById('terminal').style.color = '#ffffff';
                         document.getElementById('commandInput').style.color = '#ffffff';
-                        localStorage.setItem('tfdSettings', JSON.stringify(defaultSettings));
+                        localStorage.setItem('conSettings', JSON.stringify(defaultSettings));
                         
                         output.textContent = 'All settings restored to default.';
                         break;
@@ -286,7 +286,7 @@ function handleCommand(command) {
                             localSet.consoleBlur = settingValue;
                             document.getElementById('terminal').style.backdropFilter = `blur(${settingValue}px)`;
                             output.textContent = `Blur set to: ${settingValue}`;
-                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                            localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else {
                             output.textContent = 'Invalid value for blur. Use a value like "blur 5".';
                         }
@@ -296,12 +296,12 @@ function handleCommand(command) {
                             localSet.backgroundPositionY = settingValue;
                             document.getElementById('app').style.backgroundPositionY = settingValue;
                             output.textContent = `Background position Y set to: ${settingValue}`;
-                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                            localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else if (settingValue === 'restore') {
                             localSet.backgroundPositionY = 'center';
                             document.getElementById('app').style.backgroundPositionY = 'center';
                             output.textContent = 'Background position Y restored to default (center).';
-                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                            localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else {
                             output.textContent = 'Invalid value for bgpos. Use a value like "center", "top", "bottom", or in px/%.';
                         }
@@ -311,12 +311,12 @@ function handleCommand(command) {
                             localSet.consoleBgColor = settingValue;
                             document.getElementById('terminal').style.backgroundColor = `rgba(${settingValue})`;
                             output.textContent = `Console background color set to: rgba(${settingValue})`;
-                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                            localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else if (settingValue === 'restore') {
                             localSet.consoleBgColor = "0,0,0,0.7";
                             document.getElementById('terminal').style.backgroundColor = `rgba(0,0,0,0.7)`;
                             output.textContent = 'Console background color restored to default (rgba(0,0,0,0.7)).';
-                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                            localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else {
                             output.textContent = 'Invalid value for bgcolor. Use a valid rgba value (e.g., 0,0,0,0.7).';
                         }
@@ -327,13 +327,13 @@ function handleCommand(command) {
                             document.getElementById('terminal').style.color = settingValue;
                             document.getElementById('commandInput').style.color = settingValue;
                             output.textContent = `Font color set to: ${settingValue}`;
-                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                            localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else if (settingValue === 'restore') {
                             localSet.fontColor = "#ffffff";
                             document.getElementById('terminal').style.color = "#ffffff";
                             document.getElementById('commandInput').style.color = "#ffffff";
                             output.textContent = 'Font color restored to default (#ffffff).';
-                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                            localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else {
                             output.textContent = 'Invalid value for font color. Use a valid hex color code (e.g., #ff0000).';
                         }
