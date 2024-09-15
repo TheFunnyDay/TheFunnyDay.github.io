@@ -14,7 +14,7 @@ const portfolioLinks = `
         <li><a href="https://gist.github.com/TheFunnyDay/0d027d474fa8d0e4ad870cdf04085315" target="_blank">Danbooru Downloader</a></li>
         <li><a href="https://gist.github.com/TheFunnyDay/56ea7be335483f8d7284fdec0f924ca7" target="_blank">Pixiv-remove-bookmarks</a></li>
     </ul>
-    <p style="color: red; list-style: none"><a href="?p=main" style="color: red; text-decoration: none" class="page-link">Click here or input "start" for back to main</a></p>
+    <p style="color: yellow; list-style: none"><a href="?p=main" style="color: yellow; text-decoration: none" class="page-link">Click here or input "start" for back to main</a></p>
 `;
 
 const defaultHeaderText = ` 
@@ -155,7 +155,7 @@ function navigateTo(page) {
     } else {
         output.innerHTML = `
             <p style="color: red; list-style: none">Page not found</p>
-            <p list-style: none"><a href="?p=main" style="color: white; text-decoration: none" class="page-link">Click here or input "start" for back to main</a></p>
+            <p list-style: none;"><a href="?p=main" style="color: yellow; text-decoration: none" class="page-link">Click here or input "start" for back to main</a></p>
         `;
     }
 }
@@ -264,7 +264,7 @@ function handleCommand(command) {
                 const settingValue = args.slice(1).join(' ');
 
                 switch (settingName) {
-                    case 'restoreall':
+                    case 'resetall':
                         const defaultSettings = {
                             consoleBlur: "0",
                             backgroundPositionY: "center",
@@ -277,9 +277,10 @@ function handleCommand(command) {
                         document.getElementById('terminal').style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
                         document.getElementById('terminal').style.color = '#ffffff';
                         document.getElementById('commandInput').style.color = '#ffffff';
+                        localStorage.removeItem('conSettings');
                         localStorage.setItem('conSettings', JSON.stringify(defaultSettings));
                         
-                        output.textContent = 'All settings restored to default.';
+                        output.textContent = 'All settings reset to default.';
                         break;
                     case 'blur':
                         if (settingValue) {
@@ -297,10 +298,10 @@ function handleCommand(command) {
                             document.getElementById('app').style.backgroundPositionY = settingValue;
                             output.textContent = `Background position Y set to: ${settingValue}`;
                             localStorage.setItem('conSettings', JSON.stringify(localSet));
-                        } else if (settingValue === 'restore') {
+                        } else if (settingValue === 'reset') {
                             localSet.backgroundPositionY = 'center';
                             document.getElementById('app').style.backgroundPositionY = 'center';
-                            output.textContent = 'Background position Y restored to default (center).';
+                            output.textContent = 'Background position Y reset to default (center).';
                             localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else {
                             output.textContent = 'Invalid value for bgpos. Use a value like "center", "top", "bottom", or in px/%.';
@@ -312,10 +313,10 @@ function handleCommand(command) {
                             document.getElementById('terminal').style.backgroundColor = `rgba(${settingValue})`;
                             output.textContent = `Console background color set to: rgba(${settingValue})`;
                             localStorage.setItem('conSettings', JSON.stringify(localSet));
-                        } else if (settingValue === 'restore') {
+                        } else if (settingValue === 'reset') {
                             localSet.consoleBgColor = "0,0,0,0.7";
                             document.getElementById('terminal').style.backgroundColor = `rgba(0,0,0,0.7)`;
-                            output.textContent = 'Console background color restored to default (rgba(0,0,0,0.7)).';
+                            output.textContent = 'Console background color reset to default (rgba(0,0,0,0.7)).';
                             localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else {
                             output.textContent = 'Invalid value for bgcolor. Use a valid rgba value (e.g., 0,0,0,0.7).';
@@ -328,11 +329,11 @@ function handleCommand(command) {
                             document.getElementById('commandInput').style.color = settingValue;
                             output.textContent = `Font color set to: ${settingValue}`;
                             localStorage.setItem('conSettings', JSON.stringify(localSet));
-                        } else if (settingValue === 'restore') {
+                        } else if (settingValue === 'reset') {
                             localSet.fontColor = "#ffffff";
                             document.getElementById('terminal').style.color = "#ffffff";
                             document.getElementById('commandInput').style.color = "#ffffff";
-                            output.textContent = 'Font color restored to default (#ffffff).';
+                            output.textContent = 'Font color reset to default (#ffffff).';
                             localStorage.setItem('conSettings', JSON.stringify(localSet));
                         } else {
                             output.textContent = 'Invalid value for font color. Use a valid hex color code (e.g., #ff0000).';
@@ -348,18 +349,18 @@ function handleCommand(command) {
                         <ul>
                             <li>blur &lt;value&gt; - set blur value</li>
                             <li>bgpos &lt;value&gt; - set background position Y</li>
-                            <li>bgpos restore - restore background position to default</li>
+                            <li>bgpos reset - reset background position to default</li>
                             <li>bgcolor &lt;R,G,B,A&gt; - set console background color</li>
-                            <li>bgcolor restore - restore console background color to default</li>
+                            <li>bgcolor reset - reset console background color to default</li>
                             <li>fontcolor &lt;hex&gt; - set font color</li>
-                            <li>fontcolor restore - restore font color to default</li>
-                            <li>restoreall - restore all settings</li>
+                            <li>fontcolor reset - reset font color to default</li>
+                            <li>resetall - reset all settings</li>
                         </ul>
                     `;
             }
             break;
         case 'help':
-            output.innerHTML = 'Available commands: <br><ul><li>start | back - back to main</li><li>portfolio - go to portfolio page</li><li>game - go to game</li><li>setup - background image settings<ul><li>setup &lt;url to image&gt; - set background image</li><li>setup remove - remove background image</li></ul></li><li>settings - various settings<ul><li>settings blur &lt;value&gt; - set blur value</li><li>settings bgpos &lt;value&gt; - set background position Y (valid values: % | px | bottom | top | center)</li><li>settings bgpos restore - restore background position to default (center)</li><li>settings bgcolor &lt;R,G,B,A&gt; - set console background color (RGBA)</li><li>settings bgcolor restore - restore console background color to default (rgba(0,0,0,0.7))</li><li>settings fontcolor &lt;hex&gt; - set font color (hex)</li><li>settings fontcolor restore - restore font color to default (#ffffff)</li><li>settings restoreall - restore all settings to default</ul></li><li>help - displays this help message</li></ul>';
+            output.innerHTML = 'Available commands: <br><ul><li>start | back - back to main</li><li>portfolio - go to portfolio page</li><li>game - go to game</li><li>setup - background image settings<ul><li>setup &lt;url to image&gt; - set background image</li><li>setup remove - remove background image</li></ul></li><li>settings - various settings<ul><li>settings blur &lt;value&gt; - set blur value</li><li>settings bgpos &lt;value&gt; - set background position Y (valid values: % | px | bottom | top | center)</li><li>settings bgpos reset - reset background position to default (center)</li><li>settings bgcolor &lt;R,G,B,A&gt; - set console background color (RGBA)</li><li>settings bgcolor reset - reset console background color to default (rgba(0,0,0,0.7))</li><li>settings fontcolor &lt;hex&gt; - set font color (hex)</li><li>settings fontcolor reset - reset font color to default (#ffffff)</li><li>settings resetall - reset all settings to default</ul></li><li>help - displays this help message</li></ul>';
             break;
         default:
             output.textContent = `Unknown command: ${command}`;
