@@ -187,8 +187,6 @@ function setBackgroundImage(url) {
 }
 
 
-
-
 // Setup command input
 input.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
@@ -204,7 +202,7 @@ function handleCommand(command) {
     const parts = command.split(' ');
     const cmd = parts[0];
     const args = parts.slice(1);
-    
+
     switch (cmd) {
         case 'start':
             navigateTo('main');
@@ -260,30 +258,108 @@ function handleCommand(command) {
             }
             break;
         case 'settings':
-            if (args.length > 0 && args[0] === 'blur') {
-                if (args.length === 2) {
-                    const blurValue = args[1];
-                    const localSet = JSON.parse(localStorage.getItem('tfdSettings'))
-                    if (blurValue <= 0) {
-                        output.textContent = 'Blur removed.';
+            if (args.length > 0) {
+                const localSet = JSON.parse(localStorage.getItem('tfdSettings'));
+                const settingName = args[0];
+                const settingValue = args.slice(1).join(' ');
+
+                switch (settingName) {
+                    case 'restoreall':
+                        const defaultSettings = {
+                            consoleBlur: "0",
+                            backgroundPositionY: "center",
+                            consoleBgColor: "0,0,0,0.7",
+                            fontColor: "#ffffff"
+                        };
+                    
                         document.getElementById('terminal').style.backdropFilter = '';
-                        localSet.consoleBlur = 0;
-                        localStorage.setItem('tfdSettings', JSON.stringify(localSet));
-                    } else {
-                        localSet.consoleBlur = blurValue;
-                        localStorage.setItem('tfdSettings', JSON.stringify(localSet));
-                        document.getElementById('terminal').style.backdropFilter = `blur(${blurValue}px)`;
-                        output.textContent = `Blur set to: ${blurValue}`;
-                    }
-                } else {
-                    output.textContent = 'Please provide a value for blur (e.g., "settings blur 1").';
+                        document.getElementById('app').style.backgroundPositionY = 'center';
+                        document.getElementById('terminal').style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                        document.getElementById('terminal').style.color = '#ffffff';
+                        document.getElementById('commandInput').style.color = '#ffffff';
+                        localStorage.setItem('tfdSettings', JSON.stringify(defaultSettings));
+                        
+                        output.textContent = 'All settings restored to default.';
+                        break;
+                    case 'blur':
+                        if (settingValue) {
+                            localSet.consoleBlur = settingValue;
+                            document.getElementById('terminal').style.backdropFilter = `blur(${settingValue}px)`;
+                            output.textContent = `Blur set to: ${settingValue}`;
+                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                        } else {
+                            output.textContent = 'Invalid value for blur. Use a value like "blur 5".';
+                        }
+                        break;
+                    case 'bgpos':
+                        if (settingValue.match(/^(top|bottom|center|[0-9]+(px|%)?)$/)) {
+                            localSet.backgroundPositionY = settingValue;
+                            document.getElementById('app').style.backgroundPositionY = settingValue;
+                            output.textContent = `Background position Y set to: ${settingValue}`;
+                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                        } else if (settingValue === 'restore') {
+                            localSet.backgroundPositionY = 'center';
+                            document.getElementById('app').style.backgroundPositionY = 'center';
+                            output.textContent = 'Background position Y restored to default (center).';
+                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                        } else {
+                            output.textContent = 'Invalid value for bgpos. Use a value like "center", "top", "bottom", or in px/%.';
+                        }
+                        break;
+                    case 'bgcolor':
+                        if (settingValue.match(/^\d{1,3},\d{1,3},\d{1,3},\d(\.\d+)?$/)) {
+                            localSet.consoleBgColor = settingValue;
+                            document.getElementById('terminal').style.backgroundColor = `rgba(${settingValue})`;
+                            output.textContent = `Console background color set to: rgba(${settingValue})`;
+                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                        } else if (settingValue === 'restore') {
+                            localSet.consoleBgColor = "0,0,0,0.7";
+                            document.getElementById('terminal').style.backgroundColor = `rgba(0,0,0,0.7)`;
+                            output.textContent = 'Console background color restored to default (rgba(0,0,0,0.7)).';
+                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                        } else {
+                            output.textContent = 'Invalid value for bgcolor. Use a valid rgba value (e.g., 0,0,0,0.7).';
+                        }
+                        break;
+                    case 'fontcolor':
+                        if (settingValue.match(/^#[0-9A-Fa-f]{6}$/)) {
+                            localSet.fontColor = settingValue;
+                            document.getElementById('terminal').style.color = settingValue;
+                            document.getElementById('commandInput').style.color = settingValue;
+                            output.textContent = `Font color set to: ${settingValue}`;
+                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                        } else if (settingValue === 'restore') {
+                            localSet.fontColor = "#ffffff";
+                            document.getElementById('terminal').style.color = "#ffffff";
+                            document.getElementById('commandInput').style.color = "#ffffff";
+                            output.textContent = 'Font color restored to default (#ffffff).';
+                            localStorage.setItem('tfdSettings', JSON.stringify(localSet));
+                        } else {
+                            output.textContent = 'Invalid value for font color. Use a valid hex color code (e.g., #ff0000).';
+                        }
+                        break;
+                    default:
+                        output.innerHTML = `<p style="color: red;">Unknown settings command: ${settingName}.</p><p>Use settings &lt;command&gt; &lt;value&gt;.</p>`;
+                        break;
                 }
             } else {
-                output.innerHTML = '<p style="color: red;">Unknown settings command.</p><p>Its syntax is: settings &lt;command&gt; &lt;value&gt;</p> <br>Available settings: <br><ul><li>blur &lt;value&gt;</li></ul>';
+                output.innerHTML = `
+                        <p style="color: red;">Unknown settings command.</p>
+                        <ul>
+                            <li>blur &lt;value&gt; - set blur value</li>
+                            <li>bgpos &lt;value&gt; - set background position Y</li>
+                            <li>bgpos restore - restore background position to default</li>
+                            <li>bgcolor &lt;R,G,B,A&gt; - set console background color</li>
+                            <li>bgcolor restore - restore console background color to default</li>
+                            <li>fontcolor &lt;hex&gt; - set font color</li>
+                            <li>fontcolor restore - restore font color to default</li>
+                            <li>restoreall - restore all settings</li>
+                        </ul>
+                    `;
             }
             break;
         case 'help':
-            output.innerHTML = 'Available commands: <br>start | back - back to main<br> portfolio - go to portfolio page<br> portfolio &lt;portfolio name&gt; - go to portfolio page with selected portfolio<br> game - go to game<br> setup &lt;url to image&gt; - set background image<br> setup remove - remove background image<br> settings blur &lt;value&gt; - set blur value<br>help - you actually already know<br>';
+            output.innerHTML = 'Available commands: <br><ul><li>start | back - back to main</li><li>portfolio - go to portfolio page</li><li>game - go to game</li><li>setup - background image settings<ul><li>setup &lt;url to image&gt; - set background image</li><li>setup remove - remove background image</li></ul></li><li>settings - various settings<ul><li>settings blur &lt;value&gt; - set blur value</li><li>settings bgpos &lt;value&gt; - set background position Y (valid values: % | px | bottom | top | center)</li><li>settings bgpos restore - restore background position to default (center)</li><li>settings bgcolor &lt;R,G,B,A&gt; - set console background color (RGBA)</li><li>settings bgcolor restore - restore console background color to default (rgba(0,0,0,0.7))</li><li>settings fontcolor &lt;hex&gt; - set font color (hex)</li><li>settings fontcolor restore - restore font color to default (#ffffff)</li><li>settings restoreall - restore all settings to default</ul></li><li>help - displays this help message</li></ul>';
             break;
         default:
             output.textContent = `Unknown command: ${command}`;

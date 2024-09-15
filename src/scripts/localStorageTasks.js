@@ -1,19 +1,33 @@
 window.onload = () => {
-    loadBackgroundImage(); // Load background image from localStorage
-    if (!localStorage.getItem('tfdSettings')) {
-        localStorage.setItem('tfdSettings', '{"consoleBlur": "0",}');
-    }
-    //parse settings to json
-    const blurValue = JSON.parse(localStorage.getItem('tfdSettings')).consoleBlur;
-    if (blurValue > 0) {
-        document.getElementById('terminal').style.backdropFilter = `blur(${blurValue}px)`;
-    }
-}
+    const terminal = document.getElementById('terminal');
+    const defaultSettings = {
+        consoleBlur: "0",
+        backgroundPositionY: "center",
+        consoleBgColor: "0,0,0,0.7",
+        fontColor: "#ffffff"
+    };
 
-// load background image
-function loadBackgroundImage() {
+    let settings = JSON.parse(localStorage.getItem('tfdSettings')) || defaultSettings;
+    settings = { ...defaultSettings, ...settings };
+    localStorage.setItem('tfdSettings', JSON.stringify(settings));
+
+    const { consoleBlur, consoleBgColor, fontColor } = settings;
+
+    if (consoleBlur > 0) {
+        terminal.style.backdropFilter = `blur(${consoleBlur}px)`;
+    }
+    terminal.style.backgroundColor = `rgba(${consoleBgColor})`;
+    terminal.style.color = fontColor;
+    document.getElementById('commandInput').style.color = fontColor;
+
+    loadBackgroundImage(settings.backgroundPositionY);
+};
+
+function loadBackgroundImage(backgroundPositionY) {
     const savedUrl = localStorage.getItem('backgroundImageUrl');
+    const app = document.getElementById('app');
     if (savedUrl) {
-        document.getElementById('app').style.backgroundImage = `url(${savedUrl})`;
+        app.style.backgroundImage = `url(${savedUrl})`;
+        app.style.backgroundPositionY = backgroundPositionY;
     }
 }
