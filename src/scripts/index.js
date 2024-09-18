@@ -190,7 +190,7 @@ function setBackgroundImage(url) {
 // Setup command input
 input.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
-        const command = input.value.trim().toLowerCase();
+        const command = input.value.trim();
         handleCommand(command);
         input.value = '';
     }
@@ -200,7 +200,7 @@ input.addEventListener('keydown', function (event) {
 
 function handleCommand(command) {
     const parts = command.split(' ');
-    const cmd = parts[0];
+    const cmd = parts[0].toLowerCase();
     const args = parts.slice(1);
 
     switch (cmd) {
@@ -212,7 +212,7 @@ function handleCommand(command) {
             break;
         case 'portfolio':
             if (args.length > 0) {
-                const portfolioName = args.join(' ');
+                const portfolioName = args.join(' ').toLowerCase();
                 switch (portfolioName) {
                     case 'doubleyou':
                         navigateTo('doubleyou');
@@ -260,8 +260,8 @@ function handleCommand(command) {
         case 'settings':
             if (args.length > 0) {
                 const localSet = JSON.parse(localStorage.getItem('conSettings'));
-                const settingName = args[0];
-                const settingValue = args.slice(1).join(' ');
+                const settingName = args[0].toLowerCase();
+                const settingValue = args.slice(1).join(' ').toLowerCase();
 
                 switch (settingName) {
                     case 'resetall':
@@ -361,6 +361,17 @@ function handleCommand(command) {
             break;
         case 'help':
             output.innerHTML = 'Available commands: <br><ul><li>start | back - back to main</li><li>portfolio - go to portfolio page</li><li>game - go to game</li><li>setup - background image settings<ul><li>setup &lt;url to image&gt; - set background image</li><li>setup remove - remove background image</li></ul></li><li>settings - various settings<ul><li>settings blur &lt;value&gt; - set blur value</li><li>settings bgpos &lt;value&gt; - set background position Y (valid values: % | px | bottom | top | center)</li><li>settings bgpos reset - reset background position to default (center)</li><li>settings bgcolor &lt;R,G,B,A&gt; - set console background color (RGBA)</li><li>settings bgcolor reset - reset console background color to default (rgba(0,0,0,0.7))</li><li>settings fontcolor &lt;hex&gt; - set font color (hex)</li><li>settings fontcolor reset - reset font color to default (#ffffff)</li><li>settings resetall - reset all settings to default</ul></li><li>help - displays this help message</li></ul>';
+            break;
+        case 'ping':
+            output.textContent = 'Pinging...';
+            const randomNumber = Math.floor(Math.random() * 10) + 1;
+            setTimeout(() => {
+                if (randomNumber == 1) {
+                    output.textContent = 'Wait';
+                } else {
+                    output.textContent = 'Pong!';
+                }
+            }, 1000);
             break;
         default:
             output.textContent = `Unknown command: ${command}`;
