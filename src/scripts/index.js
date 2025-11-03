@@ -345,22 +345,22 @@ function handleCommand(command) {
                 }
             } else {
                 output.innerHTML = `
-                        <p style="color: red;">Unknown settings command.</p>
-                        <ul>
-                            <li>blur &lt;value&gt; - set blur value</li>
-                            <li>bgpos &lt;value&gt; - set background position Y</li>
-                            <li>bgpos reset - reset background position to default</li>
-                            <li>bgcolor &lt;R,G,B,A&gt; - set console background color</li>
-                            <li>bgcolor reset - reset console background color to default</li>
-                            <li>fontcolor &lt;hex&gt; - set font color</li>
-                            <li>fontcolor reset - reset font color to default</li>
-                            <li>resetall - reset all settings</li>
-                        </ul>
-                    `;
+                    <p style="color: red;">Unknown settings command.</p>
+                    <ul>
+                        <li>blur &lt;value&gt; - set blur value</li>
+                        <li>bgpos &lt;value&gt; - set background position Y</li>
+                        <li>bgpos reset - reset background position to default</li>
+                        <li>bgcolor &lt;R,G,B,A&gt; - set console background color</li>
+                        <li>bgcolor reset - reset console background color to default</li>
+                        <li>fontcolor &lt;hex&gt; - set font color</li>
+                        <li>fontcolor reset - reset font color to default</li>
+                        <li>resetall - reset all settings</li>
+                    </ul>
+                `;
             }
             break;
         case 'help':
-            output.innerHTML = 'Available commands: <br><ul><li>start | back - back to main</li><li>portfolio - go to portfolio page</li><li>game - go to game</li><li>setup - background image settings<ul><li>setup &lt;url to image&gt; - set background image</li><li>setup remove - remove background image</li></ul></li><li>settings - various settings<ul><li>settings blur &lt;value&gt; - set blur value</li><li>settings bgpos &lt;value&gt; - set background position Y (valid values: % | px | bottom | top | center)</li><li>settings bgpos reset - reset background position to default (center)</li><li>settings bgcolor &lt;R,G,B,A&gt; - set console background color (RGBA)</li><li>settings bgcolor reset - reset console background color to default (rgba(0,0,0,0.7))</li><li>settings fontcolor &lt;hex&gt; - set font color (hex)</li><li>settings fontcolor reset - reset font color to default (#ffffff)</li><li>settings resetall - reset all settings to default</ul></li><li>help - displays this help message</li></ul>';
+            output.innerHTML = 'Available commands: <br><ul><li>start | back - back to main</li><li>portfolio - go to portfolio page</li><li>game - go to game</li><li>setup - background image settings<ul><li>setup &lt;url to image&gt; - set background image</li><li>setup remove - remove background image</li></ul></li><li>settings - various settings<ul><li>settings blur &lt;value&gt; - set blur value</li><li>settings bgpos &lt;value&gt; - set background position Y (valid values: % | px | bottom | top | center)</li><li>settings bgpos reset - reset background position to default (center)</li><li>settings bgcolor &lt;R,G,B,A&gt; - set console background color (RGBA)</li><li>settings bgcolor reset - reset console background color to default (rgba(0,0,0,0.7))</li><li>settings fontcolor &lt;hex&gt; - set font color (hex)</li><li>settings fontcolor reset - reset font color to default (#ffffff)</li><li>settings resetall - reset all settings to default</ul></li><li>sysinfo - system information</li><li>help - displays this help message</li></ul>';
             break;
         case 'ping':
             output.textContent = 'Pinging...';
@@ -373,6 +373,78 @@ function handleCommand(command) {
                 }
             }, 1000);
             break;
+        case 'sysinfo':
+            const userAgent = navigator.userAgent;
+            const screenResolution = `${window.screen.width}x${window.screen.height}`;
+            const browserLanguage = navigator.language || navigator.userLanguage;
+            const connection = navigator.connection || 'N/A (firefox?)';
+
+            let browserName, browserVersion;
+
+            if (/firefox/i.test(userAgent)) {
+                browserName = 'Firefox';
+                browserVersion = userAgent.match(/firefox\/([\d.]+)/i)[1];
+            } else if (/opr\/|opera/i.test(userAgent)) {
+                browserName = 'Opera';
+                browserVersion = userAgent.match(/(opr\/|opera\/)([\d.]+)/i)[2];
+            } else if (/edg/i.test(userAgent)) {
+                browserName = 'Edge';
+                browserVersion = userAgent.match(/edg\/([\d.]+)/i)[1];
+            } else if (/chrome/i.test(userAgent)) {
+                browserName = 'Chrome';
+                browserVersion = userAgent.match(/chrome\/([\d.]+)/i)[1];
+            } else if (/safari/i.test(userAgent) && !/chrome/i.test(userAgent)) {
+                browserName = 'Safari';
+                browserVersion = userAgent.match(/version\/([\d.]+)/i)[1];
+            } else {
+                browserName = 'Unknown';
+                browserVersion = 'N/A';
+            }
+            
+            let osName;
+
+            if (/windows nt 10.0/i.test(userAgent)) {
+                if (navigator.userAgentData && navigator.userAgentData.platform === 'Windows') {
+                    osName = 'Windows 11';
+                } else {
+                    osName = 'Windows 10';
+                }
+            } else if (/windows nt 6.3/i.test(userAgent)) {
+                osName = 'Windows 8.1';
+            } else if (/windows nt 6.2/i.test(userAgent)) {
+                osName = 'Windows 8';
+            } else if (/windows nt 6.1/i.test(userAgent)) {
+                osName = 'Windows 7';
+            } else if (/windows nt 6.0/i.test(userAgent)) {
+                osName = 'Windows Vista';
+            } else if (/windows nt 5.1/i.test(userAgent)) {
+                osName = 'Windows XP';
+            } else if (/macintosh|mac os x/i.test(userAgent)) {
+                osName = 'Mac OS';
+            } else if (/android/i.test(userAgent)) {
+                osName = 'Android';
+            } else if (/linux/i.test(userAgent)) {
+                osName = 'Linux';
+            } else if (/iphone|ipad|ipod/i.test(userAgent)) {
+                osName = 'iOS';
+            } else {
+                osName = 'Unknown OS';
+            }
+
+            output.innerHTML = `
+                <header class='consoleHeader'>
+                    <img src='src/img/sysinfo.png'/>
+                    <div class='consoleHeaderText'>
+                    <p><span style="color: yellow">Browser</span>: ${browserName} ${browserVersion}</p>
+                        <p><span style="color: yellow">Operating System</span>: ${osName}</p>
+                        <p><span style="color: yellow">Browser Language</span>: ${browserLanguage}</p>
+                        <p><span style="color: yellow">Screen Resolution</span>: ${screenResolution}</p>
+                        <p><span style="color: yellow">Connection Speed</span>: ${connection.downlink + ' Mbps'} </p>
+                    </div>
+                </header>
+            `;
+            break;
+
         default:
             output.textContent = `Unknown command: ${command}`;
             break;
